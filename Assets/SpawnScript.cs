@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SpawnScript : MonoBehaviour
@@ -10,7 +11,36 @@ public class SpawnScript : MonoBehaviour
     private float timeBetweenSpawn;
     private float timeToSpawn;
     public int numberOfMonsters;
-    // Start is called before the first frame update
+    public Text scoreText;
+    private int score;
+
+    public void DecreaseMonsterNumber(int addScore)
+    {
+	score += addScore;
+        scoreText.text = score.ToString();
+	numberOfMonsters -= 1;
+    }
+
+    public void changePause()
+    {
+	Time.timeScale = (Time.timeScale + 1) % 2;
+    }
+
+    public void freezeSpawn()
+    {
+	timeToSpawn += 3;
+    }
+
+    public void totalKill()
+    {
+	GameObject[] allMonsters;
+	allMonsters = GameObject.FindGameObjectsWithTag("Monster");
+	foreach (GameObject monster in allMonsters)
+        {
+            Destroy(monster);
+	    DecreaseMonsterNumber(1);
+        }
+    }
 
     void Spawn()
     {
@@ -25,16 +55,16 @@ public class SpawnScript : MonoBehaviour
 
     void Start()
     {
-        timeBetweenSpawn = 2;
+        timeBetweenSpawn = 4;
+	scoreText.text = score.ToString();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(timeToSpawn <= 0)
 	{
-	    Spawn();
-	    timeToSpawn = timeBetweenSpawn;
+//	    Spawn();
+	    timeToSpawn = timeBetweenSpawn  / (score + 2);
 	}
 	else
 	{
