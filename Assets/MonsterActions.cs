@@ -5,50 +5,48 @@ using System;
 
 public class MonsterActions : MonoBehaviour
 {
-    public GameObject logic;
+    private GameObject logic;
     private Rigidbody _rb;
-    private float timeToForce, timeToRotate, timeBetweenForce, timeBetweenRotate;
+    private float timeToMove, timeBetweenMove;
+    private float forseScale;
 
     // Start is called before the first frame update
     void Start()
     {
 	logic = GameObject.Find("Logic");
 	_rb = GetComponent<Rigidbody>();
-//	_rb.AddForce(new Vector3(0,0,50));
 	Physics.IgnoreLayerCollision(6, 6);
-	_rb.MoveRotation(Quaternion.Euler(new Vector3(0, 100, 0)));
-	timeBetweenForce = 2;
-	timeBetweenRotate = 2;
-	_rb.AddForce(new Vector3((float)(Math.Sin(transform.rotation.y)*50),0,(float)(Math.Cos(transform.rotation.y)*50)));
+	timeBetweenMove = 2;
+	forseScale = 100;
+    }
+
+    void Move()
+    {
+	_rb.MoveRotation(Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(-180,180), 0)));
+	_rb.AddForce(new Vector3((float)(Math.Sin(_rb.rotation.eulerAngles.y/180*Math.PI))*forseScale,0,(float)(Math.Cos(_rb.rotation.eulerAngles.y/180*Math.PI))*forseScale));
+
     }
 
     // Update is called once per frame
     void Update()
     {
-/*        if(timeToRotate <= 0)
+        if(timeToMove <= 0)
 	{
-	    timeToRotate = timeBetweenRotate;
-	    _rb.MoveRotation(Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(-180,180), 0)));
-	    Debug.Log("rotate");
+	    timeToMove = timeBetweenMove;
+	    Move();
 	}
 	else
 	{
-	    timeToRotate -= Time.deltaTime;
+	    timeToMove -= Time.deltaTime;
 	}
-        if(timeToForce <= 0)
-	{
-	    timeToForce = timeBetweenForce;
-	    _rb.AddForce(new Vector3((float)(Math.Sin(transform.rotation.y)*50),0,(float)(Math.Cos(transform.rotation.y)*50)));
-	}
-	else
-	{
-	    timeToForce -= Time.deltaTime;
-	}*/
     }
 
     private void OnMouseDown()
     {
-	logic.GetComponent<SpawnScript>().DecreaseMonsterNumber(1);
-	Destroy(gameObject);
+	if(!logic.GetComponent<SpawnScript>().GetArePouse())
+	{
+	    logic.GetComponent<SpawnScript>().DecreaseMonsterNumber(1);
+	    Destroy(gameObject);
+	}
     }
 }

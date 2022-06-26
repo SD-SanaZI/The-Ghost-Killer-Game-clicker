@@ -13,6 +13,7 @@ public class SpawnScript : MonoBehaviour
     public int numberOfMonsters;
     public Text scoreText;
     private int score;
+    private bool arePouse;
 
     public void DecreaseMonsterNumber(int addScore)
     {
@@ -21,25 +22,35 @@ public class SpawnScript : MonoBehaviour
 	numberOfMonsters -= 1;
     }
 
-    public void changePause()
+    public bool GetArePouse()
+    {
+	return arePouse;
+    }
+
+    public void ChangePause()
     {
 	Time.timeScale = (Time.timeScale + 1) % 2;
+	arePouse = !arePouse;
     }
 
-    public void freezeSpawn()
+    public void FreezeSpawn()
     {
-	timeToSpawn += 3;
+	if(!arePouse)
+		timeToSpawn += 3;
     }
 
-    public void totalKill()
+    public void TotalKill()
     {
-	GameObject[] allMonsters;
-	allMonsters = GameObject.FindGameObjectsWithTag("Monster");
-	foreach (GameObject monster in allMonsters)
-        {
-            Destroy(monster);
-	    DecreaseMonsterNumber(1);
-        }
+	if(!arePouse)
+	{
+	    GameObject[] allMonsters;
+	    allMonsters = GameObject.FindGameObjectsWithTag("Monster");
+	    foreach (GameObject monster in allMonsters)
+	    {
+	        Destroy(monster);
+		DecreaseMonsterNumber(1);
+            }
+	}
     }
 
     void Spawn()
@@ -49,6 +60,7 @@ public class SpawnScript : MonoBehaviour
 	numberOfMonsters += 1;
 	if(numberOfMonsters == 10)
 	{
+	    PlayerPrefs.SetInt("Score", score);
 	    SceneManager.LoadScene("Scenes/Recording");
 	}
     }
@@ -63,7 +75,7 @@ public class SpawnScript : MonoBehaviour
     {
         if(timeToSpawn <= 0)
 	{
-//	    Spawn();
+	    Spawn();
 	    timeToSpawn = timeBetweenSpawn  / (score + 2);
 	}
 	else
