@@ -398,7 +398,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1944813304}
         m_TargetAssemblyTypeName: SpawnScript, Assembly-CSharp
-        m_MethodName: changePause
+        m_MethodName: ChangePause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2374,7 +2374,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1944813304}
         m_TargetAssemblyTypeName: SpawnScript, Assembly-CSharp
-        m_MethodName: totalKill
+        m_MethodName: TotalKill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3229,7 +3229,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1944813304}
         m_TargetAssemblyTypeName: SpawnScript, Assembly-CSharp
-        m_MethodName: freezeSpawn
+        m_MethodName: FreezeSpawn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3830,6 +3830,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8217238188471564498, guid: cb8645d7c7cddab47848ddc0495f1e98,
+        type: 3}
+      propertyPath: m_Drag
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
       propertyPath: m_RootOrder
@@ -3853,7 +3858,7 @@ PrefabInstance:
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.95881975
+      value: 0.8191521
       objectReference: {fileID: 0}
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
@@ -3863,7 +3868,7 @@ PrefabInstance:
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.2840153
+      value: 0.5735764
       objectReference: {fileID: 0}
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
@@ -3878,7 +3883,7 @@ PrefabInstance:
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 33
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 8217238188471564499, guid: cb8645d7c7cddab47848ddc0495f1e98,
         type: 3}
