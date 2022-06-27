@@ -1,30 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class MonsterActions : MonoBehaviour
 {
-    private GameObject logic;
-    private Rigidbody _rb;
     private float timeToMove, timeBetweenMove;
     private float forseScale;
+    private int hp;
+    public GameObject soundTouch, soundDeath;
 
     // Start is called before the first frame update
     void Start()
     {
-	logic = GameObject.Find("Logic");
-	_rb = GetComponent<Rigidbody>();
-	Physics.IgnoreLayerCollision(6, 6);
+	Physics.IgnoreLayerCollision(6, 6);// На слое 6 находяться монстры. Монстры не сталкиваются
 	timeBetweenMove = 2;
 	forseScale = 100;
+	hp = GameObject.Find("Logic").GetComponent<SpawnScript>().GetScore() / 5;
+	GetComponent<Transform>().localScale = new Vector3(0.15f + 0.05f * hp, 0.15f + 0.05f * hp, 0.15f + 0.05f * hp);
     }
 
     void Move()
     {
-	_rb.MoveRotation(Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(-180,180), 0)));
-	_rb.AddForce(new Vector3((float)(Math.Sin(_rb.rotation.eulerAngles.y/180*Math.PI))*forseScale,0,(float)(Math.Cos(_rb.rotation.eulerAngles.y/180*Math.PI))*forseScale));
-
+	GetComponent<Rigidbody>().MoveRotation(Quaternion.Euler(new Vector3(0, UnityEngine.Random.Range(-180,180), 0)));
+	GetComponent<Rigidbody>().AddForce(new Vector3(
+				(float)(Math.Sin(GetComponent<Rigidbody>().rotation.eulerAngles.y/180*Math.PI))*forseScale,
+				0,
+				(float)(Math.Cos(GetComponent<Rigidbody>().rotation.eulerAngles.y/180*Math.PI))*forseScale));
     }
 
     // Update is called once per frame
@@ -32,21 +34,37 @@ public class MonsterActions : MonoBehaviour
     {
         if(timeToMove <= 0)
 	{
-	    timeToMove = timeBetweenMove;
+	    timeToMove = 1 + timeBetweenMove / (GameObject.Find("Logic").GetComponent<SpawnScript>().GetScore() + 2);
 	    Move();
 	}
 	else
 	{
 	    timeToMove -= Time.deltaTime;
 	}
+	if(GetComponent<Light>().intensity > 0)
+	{
+	    GetComponent<Light>().intensity -= 0.1f;
+	}
+    }
+
+    private void TakeHit()
+    {
+	hp -= GameObject.Find("Logic").GetComponent<SpawnScript>().GetDamage();
+	GetComponent<Transform>().localScale = new Vector3(0.15f + 0.05f * hp, 0.15f + 0.05f * hp, 0.15f + 0.05f * hp);
     }
 
     private void OnMouseDown()
     {
-	if(!logic.GetComponent<SpawnScript>().GetArePouse())
+	if(!GameObject.Find("Logic").GetComponent<SpawnScript>().GetArePouse())
 	{
-	    logic.GetComponent<SpawnScript>().DecreaseMonsterNumber(1);
-	    Destroy(gameObject);
+	    TakeHit();
+	    Instantiate(soundTouch, GetComponent<Transform>().localPosition, Quaternion.identity);
+	    if(hp < 1)
+	    {
+		Instantiate(soundDeath, GetComponent<Transform>().localPosition, Quaternion.identity);
+		GameObject.Find("Logic").GetComponent<SpawnScript>().DecreaseMonsterNumber(1);
+		Destroy(gameObject);
+	    }
 	}
     }
 }
