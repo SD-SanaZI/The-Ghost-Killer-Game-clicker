@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OneShot : Buffs
 {
-    // Start is called before the first frame update
     void Start()
     {
         cdValue = 10f;

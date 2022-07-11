@@ -7,82 +7,83 @@ using UnityEngine.SceneManagement;
 public class SpawnScript : MonoBehaviour
 {
     public GameObject[] monsters;
-    private float timeBetweenSpawn, timeToSpawn;
-    private int numberOfMonsters;
-    private int score, damage;
-    private bool arePouse;
+    private float _timeBetweenSpawn, _timeToSpawn;
+    private int _numberOfMonsters;
+    private int _score, _damage;
+    private bool _arePouse;
 
     void Start()
     {
-        timeBetweenSpawn = 4;
-	damage = 1;
-	GameObject.Find("Score").GetComponent<Text>().text = score.ToString();
+        _timeBetweenSpawn = 4;
+	_damage = 1;
+	GameObject.Find("Score").GetComponent<Text>().text = _score.ToString();
     }
 
     void Update()
     {
-        if(timeToSpawn <= 0)
+        if(_timeToSpawn <= 0)
 	{
 	    Spawn();
-	    timeToSpawn = 1 + timeBetweenSpawn  / (score + 2);
+	    _timeToSpawn = 1 + _timeBetweenSpawn  / (_score + 2);
 	}
 	else
 	{
-	    timeToSpawn -= Time.deltaTime;
+	    _timeToSpawn -= Time.deltaTime;
 	}
     }
 
     public int GetDamage()
     {
-	return damage;
+	return _damage;
     }    
 
     public void SetDamage(int newDamage)
     {
-	damage = newDamage;
+	_damage = newDamage;
     }
 
     public bool GetArePouse()
     {
-	return arePouse;
+	return _arePouse;
     }
 
     public void ChangePause()
     {
 	Time.timeScale = (Time.timeScale + 1) % 2;
-	arePouse = !arePouse;
+	_arePouse = !_arePouse;
     }
 
     public void DecreaseMonsterNumber(int addScore)
     {
-	score += addScore;
-	GameObject.Find("Score").GetComponent<Text>().text = score.ToString();
-	numberOfMonsters -= 1;
-	GameObject.Find("MonsterNumber").GetComponent<Text>().text = numberOfMonsters.ToString();
+	_score += addScore;
+	GameObject.Find("Score").GetComponent<Text>().text = _score.ToString();
+	_numberOfMonsters -= 1;
+	GameObject.Find("MonsterNumber").GetComponent<Text>().text = _numberOfMonsters.ToString();
     }
 
     public int GetScore()
     {
-	return score;
+	return _score;
     }
 
     void Spawn()
     {
 	Vector3 spawnPlase = new Vector3(Random.Range(-49f,49f),0.1f,Random.Range(-49f,49f));
 	int i = Random.Range(0,monsters.Length);
-	if(i == monsters.Length) i--;
+	if(i == monsters.Length)
+	    i--;
         Instantiate(monsters[i], spawnPlase, Quaternion.identity);
-	numberOfMonsters += 1;
-	GameObject.Find("MonsterNumber").GetComponent<Text>().text = numberOfMonsters.ToString();
-	if(numberOfMonsters == 10)
+	_numberOfMonsters += 1;
+	GameObject.Find("MonsterNumber").GetComponent<Text>().text = _numberOfMonsters.ToString();
+	if(_numberOfMonsters == 10)
 	{
-	    PlayerPrefs.SetInt("Score", score);
+	    PlayerPrefs.SetInt("Score", _score);
 	    SceneManager.LoadScene("Scenes/Recording");
 	}
     }
 
     public void AddTimeToSpawn(float time)
     {
-	timeToSpawn += time;
+	_timeToSpawn += time;
     }
 }
