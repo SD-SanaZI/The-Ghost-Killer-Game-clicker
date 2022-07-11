@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class FreezeSpawn : Buffs
 {
-    // Start is called before the first frame update
+    private float _freezeTime;
+
     void Start()
     {
         cdValue = 8f;
+	_freezeTime = 3f;
     }
 
     protected override void Buffer()
     {
-	GameObject.Find("Logic").GetComponent<SpawnScript>().AddTimeToSpawn(3f);
+	GameObject.Find("Logic").GetComponent<SpawnScript>().AddTimeToSpawn(_freezeTime);
     }
 }

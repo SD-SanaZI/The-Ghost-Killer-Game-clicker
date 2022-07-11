@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private Vector3 posMouse, posCam;
-    // Update is called once per frame
+    private Vector2 _UpperCameraLimit, _LowerCameraLimit;
+    private Vector3 _posMouse, _posCam;
+
+    void Start()
+    {
+	_UpperCameraLimit = new Vector2(35, -25);
+	_LowerCameraLimit = new Vector2(-35, -60);
+    }
+
     void Update()
     {
         if(Input.GetMouseButtonDown(0))
 	{
-	    posCam = GetComponent<Transform>().position;
-	    posMouse = Input.mousePosition;
+	    _posCam = GetComponent<Transform>().position;
+	    _posMouse = Input.mousePosition;
 	} 
 	else if(Input.GetMouseButton(0))
 	{
-	    float x = posCam.x - (Input.mousePosition.x - posMouse.x)/10;
-	    float y = posCam.z - (Input.mousePosition.y - posMouse.y)/10;
-	    if(x > 35)	x = 35;
-	    if(x < -35)	x = -35;
-	    if(y > -25)	y = -25;
-	    if(y < -60)	y = -60;	
-	    GetComponent<Transform>().position = new Vector3(x, posCam.y, y);
+	    float x = _posCam.x - (Input.mousePosition.x - _posMouse.x)/10;
+	    float y = _posCam.z - (Input.mousePosition.y - _posMouse.y)/10;
+	    if(x > _UpperCameraLimit.x)
+		x = _UpperCameraLimit.x;
+	    if(x < _LowerCameraLimit.x)
+		x = _LowerCameraLimit.x;
+	    if(y > _UpperCameraLimit.y)
+		y = _UpperCameraLimit.y;
+	    if(y < _LowerCameraLimit.y)
+		y = _LowerCameraLimit.y;	
+	    GetComponent<Transform>().position = new Vector3(x, _posCam.y, y);
 	}
     }
 }

@@ -5,55 +5,34 @@ using UnityEngine.UI;
 
 public class Buffs : MonoBehaviour
 {
-    protected float cdValue, buffValue;
-    private float cdTime, buffTime;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected float cdValue, buffValue; // Полное время перезарядки
+    private float _cdTime, _buffTime;     // Текущее время перезарядки
 
-    // Update is called once per frame
     void Update()
     {
-	if(cdTime > 0)
-	{
-	    GetComponentInChildren<Text>( true ).text = cdTime.ToString();
-            cdTime -= Time.deltaTime;
-	    if(cdTime <= 0)
-	    {
-		GetComponentInChildren<Text>( true ).text = name;
-	    }
+	if(_cdTime > 0){
+	    GetComponentInChildren<Text>(true).text = _cdTime.ToString();
+            _cdTime -= Time.deltaTime;
+	    if(_cdTime <= 0)
+		GetComponentInChildren<Text>(true).text = name;
 	}
-	if(buffTime > 0)
-	{
-            buffTime -= Time.deltaTime;
-	    if(buffTime <= 0)
-	    {
+	if(_buffTime > 0){
+            _buffTime -= Time.deltaTime;
+	    if(_buffTime <= 0)
 		UnBuffer();
-	    }
 	}
     }
 
     public void Do()
     {
-	if(cdTime <= 0 && !GameObject.Find("Logic").GetComponent<SpawnScript>().GetArePouse())
+	if(_cdTime <= 0 && !GameObject.Find("Logic").GetComponent<SpawnScript>().GetArePouse())
 	{
-	    cdTime = cdValue;
-	    buffTime = buffValue;
+	    _cdTime = cdValue;
+	    _buffTime = buffValue;
 	    Buffer();
 	}
     }
 
-    protected virtual void Buffer()
-    {
-	
-    }
-
-    protected virtual void UnBuffer()
-    {
-	
-    }
-
-
+    protected virtual void Buffer(){}
+    protected virtual void UnBuffer(){}
 }
